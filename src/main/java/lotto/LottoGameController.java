@@ -24,7 +24,7 @@ public class LottoGameController {
 
         List<Lotto> lottos = lottoStore.buyLottos(money);
 
-        outputView.printLottos(lottos, count);
+        outputView.printLottos(lottos);
     }
 
     private int parseMoney(String inputMoney) throws IllegalArgumentException{
