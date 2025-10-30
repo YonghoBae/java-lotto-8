@@ -28,7 +28,6 @@ public class LottoGameController {
 
         outputView.printLottos(lottos);
 
-
         String inputWinningNumbers = inputView.inputWinningNumbers();
 
         List<Integer> winningNumbers = parseWinningNumbers(inputWinningNumbers);
@@ -36,10 +35,10 @@ public class LottoGameController {
         outputView.printWinningNumbers(winningNumbers);
     }
 
-    private int parseMoney(String inputMoney) throws IllegalArgumentException{
-        try{
+    private int parseMoney(String inputMoney) throws IllegalArgumentException {
+        try {
             return Integer.parseInt(inputMoney);
-        }catch (NumberFormatException | NullPointerException e){
+        } catch (NumberFormatException | NullPointerException e) {
             throw new IllegalArgumentException("[ERROR] 구입 금액은 숫자여야 합니다.");
         }
     }
