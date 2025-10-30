@@ -1,11 +1,9 @@
 package lotto;
 
-import camp.nextstep.edu.missionutils.Randoms;
-
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.EnumMap;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Map;
 
 public class LottoGameController {
 
@@ -30,6 +28,10 @@ public class LottoGameController {
         int bonusNumber = getValidBonusNumber(winningMainLotto);
 
         WinningLotto winningLotto = new WinningLotto(winningMainLotto, bonusNumber);
+
+        Map<WinningCriteria, Integer> statistics = calculateStatistics(lottos, winningLotto);
+
+        double profitRate = calculateProfitRate(statistics, money);
     }
 
     private int getValidPurchaseAmount() {
@@ -110,5 +112,31 @@ public class LottoGameController {
         if (winningMainLotto.contains(bonusNumber)) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
+    }
+
+    private Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningLotto winningLotto) {
+        Map<WinningCriteria, Integer> stats = new EnumMap<>(WinningCriteria.class);
+        for (WinningCriteria criteria : WinningCriteria.values()) {
+            stats.put(criteria, 0);
+        }
+
+        for (Lotto lotto : lottos) {
+            WinningCriteria rank = lotto.calculateRank(winningLotto);
+            stats.put(rank, stats.get(rank) + 1);
+        }
+        return stats;
+    }
+
+    private double calculateProfitRate(Map<WinningCriteria, Integer> stats, int purchaseMoney) {
+        long totalPrize = 0;
+        for (Map.Entry<WinningCriteria, Integer> entry : stats.entrySet()) {
+            totalPrize += entry.getKey().getPrizeMoney() * entry.getValue();
+        }
+
+        if (purchaseMoney == 0) {
+            return 0.0;
+        }
+
+        return ((double) totalPrize / purchaseMoney) * 100.0;
     }
 }
