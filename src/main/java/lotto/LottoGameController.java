@@ -9,9 +9,9 @@ import java.util.stream.Collectors;
 
 public class LottoGameController {
 
-    private InputView inputView;
-    private OutputView outputView;
-    private LottoStore lottoStore;
+    private final InputView inputView;
+    private final OutputView outputView;
+    private final LottoStore lottoStore;
 
     LottoGameController(InputView inputView, OutputView outputView) {
         this.inputView = inputView;
@@ -20,32 +20,54 @@ public class LottoGameController {
     }
 
     public void run() {
-        String inputMoney = inputView.inputPurchaseAmount();
-
-        int money = parseMoney(inputMoney);
+        int money = getValidPurchaseAmount();
 
         List<Lotto> lottos = lottoStore.buyLottos(money);
-
         outputView.printLottos(lottos);
 
-        String inputWinningNumbers = inputView.inputWinningNumbers();
+        Lotto winningMainLotto = getValidWinningMainLotto();
 
-        List<Integer> winningNumbers = parseWinningNumbers(inputWinningNumbers);
+        int bonusNumber = getValidBonusNumber(winningMainLotto);
 
-        outputView.printWinningNumbers(winningNumbers);
+        WinningLotto winningLotto = new WinningLotto(winningMainLotto, bonusNumber);
+    }
 
-        String inputBonusNumber = inputView.inputBonusNumber();
-
-        int bonusNumber = parseBonusNumber(inputBonusNumber);
-
-        outputView.printBonusNumber(bonusNumber);
+    private int getValidPurchaseAmount() {
+        while (true) {
+            try {
+                String inputMoney = inputView.inputPurchaseAmount();
+                int money = parseMoney(inputMoney);
+                validateMoneyUnit(money);
+                return money;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
 
     private int parseMoney(String inputMoney) throws IllegalArgumentException {
         try {
             return Integer.parseInt(inputMoney);
-        } catch (NumberFormatException | NullPointerException e) {
+        } catch (NumberFormatException e) {
             throw new IllegalArgumentException("[ERROR] 구입 금액은 숫자여야 합니다.");
+        }
+    }
+
+    private void validateMoneyUnit(int money) throws IllegalArgumentException {
+        if (money <= 0 || money % 1000 != 0) {
+            throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위의 양수여야 합니다.");
+        }
+    }
+
+    private Lotto getValidWinningMainLotto() {
+        while (true) {
+            try {
+                String inputWinningNumbers = inputView.inputWinningNumbers();
+                List<Integer> numbers = parseWinningNumbers(inputWinningNumbers);
+                return new Lotto(numbers);
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -55,11 +77,21 @@ public class LottoGameController {
                     .map(String::trim)
                     .map(Integer::parseInt)
                     .toList();
-
         } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("당첨 번호는 숫자만 입력해야 합니다.");
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException("당첨 번호가 입력되지 않았습니다.");
+            throw new IllegalArgumentException("[ERROR] 당첨 번호는 숫자만 입력해야 합니다.");
+        }
+    }
+
+    private int getValidBonusNumber(Lotto winningMainLotto) {
+        while (true) {
+            try {
+                String inputBonusNumber = inputView.inputBonusNumber();
+                int bonusNumber = parseBonusNumber(inputBonusNumber);
+                validateBonusNumber(winningMainLotto, bonusNumber);
+                return bonusNumber;
+            } catch (IllegalArgumentException e) {
+                System.out.println(e.getMessage());
+            }
         }
     }
 
@@ -68,8 +100,15 @@ public class LottoGameController {
             return Integer.parseInt(inputBonusNumber);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 숫자만 입력해야 합니다.");
-        } catch (NullPointerException e) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호가 입력되 않았습니다.");
+        }
+    }
+
+    private void validateBonusNumber(Lotto winningMainLotto, int bonusNumber) {
+        if (bonusNumber < 1 || bonusNumber > 45) {
+            throw new IllegalArgumentException("[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
+        }
+        if (winningMainLotto.contains(bonusNumber)) {
+            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
     }
 }
