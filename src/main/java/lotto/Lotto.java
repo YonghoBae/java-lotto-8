@@ -35,4 +35,25 @@ public class Lotto {
     public String toString() {
         return numbers.toString();
     }
+
+    public WinningCriteria calculateRank(WinningLotto winningLotto) {
+        int matchCount = countMatchingNumbers(winningLotto.getMainNumbers());
+        boolean matchBonus = contains(winningLotto.getBonusNumber());
+
+        return WinningCriteria.valueOf(matchCount, matchBonus);
+    }
+
+    private int countMatchingNumbers(List<Integer> numbersToCompare) {
+        return (int) this.numbers.stream()
+                .filter(numbersToCompare::contains)
+                .count();
+    }
+
+    public boolean contains(int number) {
+        return this.numbers.contains(number);
+    }
+
+    public List<Integer> getNumbers() {
+        return Collections.unmodifiableList(numbers);
+    }
 }
