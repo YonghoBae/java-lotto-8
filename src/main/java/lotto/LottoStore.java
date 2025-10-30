@@ -3,7 +3,9 @@ package lotto;
 import camp.nextstep.edu.missionutils.Randoms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class LottoStore {
     private static final int LOTTO_PRICE = 1000;
@@ -29,6 +31,11 @@ public class LottoStore {
 
     private Lotto generateLotto() {
         List<Integer> numbers = Randoms.pickUniqueNumbersInRange(LOTTO_NUMBER_MIN, LOTTO_NUMBER_MAX, LOTTO_NUMBER_SIZE);
-        return new Lotto(numbers);
+
+        List<Integer> sortedNumbers = numbers.stream().
+                sorted()
+                .toList();
+
+        return new Lotto(sortedNumbers);
     }
 }
