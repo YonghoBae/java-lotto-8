@@ -33,6 +33,12 @@ public class LottoGameController {
         List<Integer> winningNumbers = parseWinningNumbers(inputWinningNumbers);
 
         outputView.printWinningNumbers(winningNumbers);
+
+        String inputBonusNumber = inputView.inputBonusNumber();
+
+        int bonusNumber = parseBonusNumber(inputBonusNumber);
+
+        outputView.printBonusNumber(bonusNumber);
     }
 
     private int parseMoney(String inputMoney) throws IllegalArgumentException {
@@ -54,6 +60,16 @@ public class LottoGameController {
             throw new IllegalArgumentException("당첨 번호는 숫자만 입력해야 합니다.");
         } catch (NullPointerException e) {
             throw new IllegalArgumentException("당첨 번호가 입력되지 않았습니다.");
+        }
+    }
+
+    private int parseBonusNumber(String inputBonusNumber) {
+        try {
+            return Integer.parseInt(inputBonusNumber);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("[ERROR] 보너스 번호는 숫자만 입력해야 합니다.");
+        } catch (NullPointerException e) {
+            throw new IllegalArgumentException("[ERROR] 보너스 번호가 입력되 않았습니다.");
         }
     }
 }
