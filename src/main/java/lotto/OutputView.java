@@ -1,6 +1,8 @@
 package lotto;
 
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 
 public class OutputView {
     public void printError(String error) {
@@ -15,11 +17,23 @@ public class OutputView {
         }
     }
 
-    public void printWinningNumbers(List<Integer> winningNumbers) {
-        System.out.println(winningNumbers);
+    public void printStatistics(Map<WinningCriteria, Integer> stats) {
+        System.out.println("\n당첨 통계\n---");
+
+        System.out.printf("3개 일치 (%,d원) - %d개\n",
+                WinningCriteria.FIFTH.getPrizeMoney(), stats.get(WinningCriteria.FIFTH));
+        System.out.printf("4개 일치 (%,d원) - %d개\n",
+                WinningCriteria.FOURTH.getPrizeMoney(), stats.get(WinningCriteria.FOURTH));
+        System.out.printf("5개 일치 (%,d원) - %d개\n",
+                WinningCriteria.THIRD.getPrizeMoney(), stats.get(WinningCriteria.THIRD));
+        System.out.printf("5개 일치, 보너스 볼 일치 (%,d원) - %d개\n",
+                WinningCriteria.SECOND.getPrizeMoney(), stats.get(WinningCriteria.SECOND));
+        System.out.printf("6개 일치 (%,d원) - %d개\n",
+                WinningCriteria.FIRST.getPrizeMoney(), stats.get(WinningCriteria.FIRST));
     }
 
-    public void printBonusNumber(int bonusNumber) {
-        System.out.println(bonusNumber);
+    public void printProfitRate(double rate) {
+        DecimalFormat df = new DecimalFormat("#,##0.0");
+        System.out.printf("총 수익률은 %s%%입니다.\n", df.format(rate));
     }
 }

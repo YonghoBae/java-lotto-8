@@ -32,6 +32,9 @@ public class LottoGameController {
         Map<WinningCriteria, Integer> statistics = calculateStatistics(lottos, winningLotto);
 
         double profitRate = calculateProfitRate(statistics, money);
+
+        outputView.printStatistics(statistics);
+        outputView.printProfitRate(profitRate);
     }
 
     private int getValidPurchaseAmount() {
