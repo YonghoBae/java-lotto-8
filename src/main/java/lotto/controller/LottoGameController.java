@@ -1,9 +1,15 @@
-package lotto;
+package lotto.controller;
 
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import lotto.InputView;
+import lotto.Lotto;
+import lotto.LottoStore;
+import lotto.OutputView;
+import lotto.WinningCriteria;
+import lotto.WinningLotto;
 
 public class LottoGameController {
 
@@ -11,10 +17,10 @@ public class LottoGameController {
     private final OutputView outputView;
     private final LottoStore lottoStore;
 
-    LottoGameController(InputView inputView, OutputView outputView) {
+    public LottoGameController(InputView inputView, OutputView outputView, LottoStore lottoStore) {
         this.inputView = inputView;
         this.outputView = outputView;
-        this.lottoStore = new LottoStore();
+        this.lottoStore = lottoStore;
     }
 
     public void run() {
