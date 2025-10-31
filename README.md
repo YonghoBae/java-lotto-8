@@ -39,51 +39,119 @@
 
 ## 클래스 다이어그램
 ```mermaid
+---
+config:
+  layout: elk
+  elk:
+    nodePlacementStrategy: BRANDES_KOEPF
+---
 classDiagram
-    class Application {
+    direction TD
+    class LottoApplication {
         +main(String[] args)
+    }
+    LottoApplication --> LottoGameController : creates & injects
+    LottoApplication --> GameFacade : creates
+    LottoApplication --> LottoService : creates
+    LottoApplication --> WinningService : creates
+    LottoApplication --> InputAdapter : creates
+    LottoApplication --> OutputView : creates
+    LottoApplication --> RandomLottoGenerator : creates
+    LottoApplication --> UserInputWinningNumbersProvider : creates
+    LottoApplication --> BasicProfitCalculator : creates
+    class InputAdapter {
+        <<Input Adapter>>
+        +inputPurchaseAmount() String
+        +inputWinningNumbers() String
+        +inputBonusNumber() String
+    }
+    class OutputView {
+        +printLottos(List~Lotto~)
+        +printStatistics(Map~WinningCriteria, Integer~)
+        +printProfitRate(double)
+        +printError(String message)
     }
     class LottoGameController {
         -InputAdapter inputAdapter
         -OutputView outputView
-        -LottoStore lottoStore
+        -GameFacade gameFacade
         +run()
     }
-    class InputAdapter {
-        +inputPurchaseAmount()
-        +inputWinningNumbers()
-        +inputBonusNumber()
+    class GameFacade {
+        -LottoService lottoService
+        -WinningService winningService
+        +buyLottos(String) List~Lotto~
+        +createWinningNumbers(String, String) WinningNumbers
+        +calculateStatistics(List~Lotto~, WinningNumbers) Map
+        +calculateProfitRate(Map, int) double
     }
-    class OutputView {
-        +printLottos(List<Lotto>)
-        +printStatistics(Map)
-        +printProfitRate(double)
+    class LottoService {
+        -LottoNumberGenerator numberGenerator
+        +validateAndParseMoney(String) int
+        +createAndValidateLotto(String) Lotto
+        +validateAndParseBonusNumber(Lotto, String) int
+        +buyLottos(int) List~Lotto~
     }
-    class LottoStore {
-        +buyLottos(int)
-        -generateLotto()
+    class WinningService {
+        -WinningNumbersProvider winningProvider
+        -ProfitCalculator profitCalculator
+        +createWinningNumbers(Lotto, int) WinningNumbers
+        +calculateStatistics(List~Lotto~, WinningNumbers) Map
+        +calculateProfitRate(Map, int) double
     }
+    class LottoNumberGenerator {
+        <<interface>>
+        +create() Lotto
+    }
+    class WinningNumbersProvider {
+        <<interface>>
+        +create() WinningNumbers
+    }
+    class ProfitCalculator {
+        <<interface>>
+        +calculate(Map~WinningCriteria, Integer~, int) double
+    }
+    class RandomLottoGenerator { +create() Lotto }
+    class ManualLottoGenerator { +create() Lotto }
+    class UserInputWinningNumbersProvider { +create() WinningNumbers }
+    class RandomWinningNumbersProvider { +create() WinningNumbers }
+    class BasicProfitCalculator { +calculate(Map,int) double }
+    LottoNumberGenerator <|.. RandomLottoGenerator
+    LottoNumberGenerator <|.. ManualLottoGenerator
+    WinningNumbersProvider <|.. UserInputWinningNumbersProvider
+    WinningNumbersProvider <|.. RandomWinningNumbersProvider
+    ProfitCalculator <|.. BasicProfitCalculator
     class Lotto {
-        +calculateRank(WinningNumbers)
-        +contains(int)
+        -List~Integer~ numbers
+        +calculateRank(WinningNumbers) WinningCriteria
+        +contains(int) boolean
     }
     class WinningNumbers {
-        +getMainNumbers()
-        +getBonusNumber()
+        -Lotto mainLotto
+        -int bonusNumber
     }
     class WinningCriteria {
-        <<enumeration>>
+        <<Enum>>
+        FIRST
+        SECOND
+        THIRD
+        FOURTH
+        FIFTH
+        MISS
+        +long prizeMoney
+        +static valueOf(int, boolean) WinningCriteria
     }
-
-    Application --> LottoGameController : 실행
-    LottoGameController --> InputAdapter : 입력
-    LottoGameController --> OutputView : 출력
-    LottoGameController --> LottoStore : 구매
-    LottoGameController --> Lotto : 통계 계산
-    LottoGameController --> WinningNumbers : 생성
-    LottoStore --> Lotto : 발급
-    WinningNumbers *-- Lotto : mainLotto
-    Lotto --> WinningCriteria : rank 결정
+    LottoGameController o--> InputAdapter
+    LottoGameController o--> OutputView
+    LottoGameController o--> GameFacade
+    GameFacade o--> LottoService
+    GameFacade o--> WinningService
+    LottoService o--> LottoNumberGenerator
+    WinningService o--> WinningNumbersProvider
+    WinningService o--> ProfitCalculator
+    WinningNumbers *-- Lotto : has-a (main numbers)
+    Lotto ..> WinningNumbers : uses in calculateRank
+    Lotto ..> WinningCriteria : returns
 ```
 
 ## 주요 도메인 규칙
