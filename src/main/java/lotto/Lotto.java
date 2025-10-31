@@ -36,9 +36,9 @@ public class Lotto {
         return numbers.toString();
     }
 
-    public WinningCriteria calculateRank(WinningLotto winningLotto) {
-        int matchCount = countMatchingNumbers(winningLotto.getMainNumbers());
-        boolean matchBonus = contains(winningLotto.getBonusNumber());
+    public WinningCriteria calculateRank(WinningNumbers winningNumbers) {
+        int matchCount = countMatchingNumbers(winningNumbers.getMainNumbers());
+        boolean matchBonus = contains(winningNumbers.getBonusNumber());
 
         return WinningCriteria.valueOf(matchCount, matchBonus);
     }

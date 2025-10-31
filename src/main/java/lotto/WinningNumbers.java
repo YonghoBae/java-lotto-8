@@ -2,12 +2,12 @@ package lotto;
 
 import java.util.List;
 
-public class WinningLotto {
+public class WinningNumbers {
 
     private final Lotto mainLotto;
     private final int bonusNumber;
 
-    public WinningLotto(Lotto mainLotto, int bonusNumber) {
+    public WinningNumbers(Lotto mainLotto, int bonusNumber) {
         validateBonusNumber(mainLotto, bonusNumber);
         this.mainLotto = mainLotto;
         this.bonusNumber = bonusNumber;
