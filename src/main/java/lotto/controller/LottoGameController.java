@@ -11,17 +11,21 @@ import lotto.OutputView;
 import lotto.WinningCriteria;
 import lotto.WinningNumbers;
 import lotto.service.LottoService;
+import lotto.service.WinningService;
 
 public class LottoGameController {
 
     private final InputAdapter inputAdapter;
     private final OutputView outputView;
     private final LottoService lottoService;
+    private final WinningService winningService;
 
-    public LottoGameController(InputAdapter inputAdapter, OutputView outputView, LottoService lottoService) {
+    public LottoGameController(InputAdapter inputAdapter, OutputView outputView, LottoService lottoService,
+                               WinningService winningService) {
         this.inputAdapter = inputAdapter;
         this.outputView = outputView;
         this.lottoService = lottoService;
+        this.winningService = winningService;
     }
 
     public void run() {
@@ -35,11 +39,11 @@ public class LottoGameController {
 
         int bonusNumber = getValidBonusNumber(winningMainLotto);
 
-        WinningNumbers winningNumbers = new WinningNumbers(winningMainLotto, bonusNumber);
+        WinningNumbers winningNumbers = winningService.createWinningNumbers(winningMainLotto, bonusNumber);
 
-        Map<WinningCriteria, Integer> statistics = calculateStatistics(lottos, winningNumbers);
+        Map<WinningCriteria, Integer> statistics = winningService.calculateStatistics(lottos, winningNumbers);
 
-        double profitRate = calculateProfitRate(statistics, money);
+        double profitRate = winningService.calculateProfitRate(statistics, money);
 
         outputView.printStatistics(statistics);
         outputView.printProfitRate(profitRate);
@@ -123,31 +127,5 @@ public class LottoGameController {
         if (winningMainLotto.contains(bonusNumber)) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
-    }
-
-    private Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningNumbers winningNumbers) {
-        Map<WinningCriteria, Integer> stats = new EnumMap<>(WinningCriteria.class);
-        for (WinningCriteria criteria : WinningCriteria.values()) {
-            stats.put(criteria, 0);
-        }
-
-        for (Lotto lotto : lottos) {
-            WinningCriteria rank = lotto.calculateRank(winningNumbers);
-            stats.put(rank, stats.get(rank) + 1);
-        }
-        return stats;
-    }
-
-    private double calculateProfitRate(Map<WinningCriteria, Integer> stats, int purchaseMoney) {
-        long totalPrize = 0;
-        for (Map.Entry<WinningCriteria, Integer> entry : stats.entrySet()) {
-            totalPrize += entry.getKey().getPrizeMoney() * entry.getValue();
-        }
-
-        if (purchaseMoney == 0) {
-            return 0.0;
-        }
-
-        return ((double) totalPrize / purchaseMoney) * 100.0;
     }
 }
