@@ -1,6 +1,7 @@
 package lotto;
 
 import lotto.controller.LottoGameController;
+import lotto.service.LottoService;
 
 public class Application {
     public static void main(String[] args) {
@@ -8,8 +9,9 @@ public class Application {
         InputAdapter inputAdapter = new InputAdapter();
         OutputView outputView = new OutputView();
         LottoStore lottoStore = new LottoStore();
+        LottoService lottoService = new LottoService(lottoStore);
 
-        LottoGameController lottoGameController = new LottoGameController(inputAdapter, outputView,lottoStore);
+        LottoGameController lottoGameController = new LottoGameController(inputAdapter, outputView, lottoService);
 
         lottoGameController.run();
     }

@@ -9,33 +9,35 @@ import lotto.Lotto;
 import lotto.LottoStore;
 import lotto.OutputView;
 import lotto.WinningCriteria;
-import lotto.WinningLotto;
+import lotto.WinningNumbers;
+import lotto.service.LottoService;
 
 public class LottoGameController {
 
     private final InputAdapter inputAdapter;
     private final OutputView outputView;
-    private final LottoStore lottoStore;
+    private final LottoService lottoService;
 
-    public LottoGameController(InputAdapter inputAdapter, OutputView outputView, LottoStore lottoStore) {
+    public LottoGameController(InputAdapter inputAdapter, OutputView outputView, LottoService lottoService) {
         this.inputAdapter = inputAdapter;
         this.outputView = outputView;
-        this.lottoStore = lottoStore;
+        this.lottoService = lottoService;
     }
 
     public void run() {
         int money = getValidPurchaseAmount();
 
-        List<Lotto> lottos = lottoStore.buyLottos(money);
+        List<Lotto> lottos = lottoService.createLotto(money);
+
         outputView.printLottos(lottos);
 
         Lotto winningMainLotto = getValidWinningMainLotto();
 
         int bonusNumber = getValidBonusNumber(winningMainLotto);
 
-        WinningLotto winningLotto = new WinningLotto(winningMainLotto, bonusNumber);
+        WinningNumbers winningNumbers = new WinningNumbers(winningMainLotto, bonusNumber);
 
-        Map<WinningCriteria, Integer> statistics = calculateStatistics(lottos, winningLotto);
+        Map<WinningCriteria, Integer> statistics = calculateStatistics(lottos, winningNumbers);
 
         double profitRate = calculateProfitRate(statistics, money);
 
@@ -123,14 +125,14 @@ public class LottoGameController {
         }
     }
 
-    private Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningLotto winningLotto) {
+    private Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningNumbers winningNumbers) {
         Map<WinningCriteria, Integer> stats = new EnumMap<>(WinningCriteria.class);
         for (WinningCriteria criteria : WinningCriteria.values()) {
             stats.put(criteria, 0);
         }
 
         for (Lotto lotto : lottos) {
-            WinningCriteria rank = lotto.calculateRank(winningLotto);
+            WinningCriteria rank = lotto.calculateRank(winningNumbers);
             stats.put(rank, stats.get(rank) + 1);
         }
         return stats;
