@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import lotto.InputView;
+import lotto.InputAdapter;
 import lotto.Lotto;
 import lotto.LottoStore;
 import lotto.OutputView;
@@ -13,12 +13,12 @@ import lotto.WinningLotto;
 
 public class LottoGameController {
 
-    private final InputView inputView;
+    private final InputAdapter inputAdapter;
     private final OutputView outputView;
     private final LottoStore lottoStore;
 
-    public LottoGameController(InputView inputView, OutputView outputView, LottoStore lottoStore) {
-        this.inputView = inputView;
+    public LottoGameController(InputAdapter inputAdapter, OutputView outputView, LottoStore lottoStore) {
+        this.inputAdapter = inputAdapter;
         this.outputView = outputView;
         this.lottoStore = lottoStore;
     }
@@ -46,7 +46,7 @@ public class LottoGameController {
     private int getValidPurchaseAmount() {
         while (true) {
             try {
-                String inputMoney = inputView.inputPurchaseAmount();
+                String inputMoney = inputAdapter.inputPurchaseAmount();
                 int money = parseMoney(inputMoney);
                 validateMoneyUnit(money);
                 return money;
@@ -73,7 +73,7 @@ public class LottoGameController {
     private Lotto getValidWinningMainLotto() {
         while (true) {
             try {
-                String inputWinningNumbers = inputView.inputWinningNumbers();
+                String inputWinningNumbers = inputAdapter.inputWinningNumbers();
                 List<Integer> numbers = parseWinningNumbers(inputWinningNumbers);
                 return new Lotto(numbers);
             } catch (IllegalArgumentException e) {
@@ -96,7 +96,7 @@ public class LottoGameController {
     private int getValidBonusNumber(Lotto winningMainLotto) {
         while (true) {
             try {
-                String inputBonusNumber = inputView.inputBonusNumber();
+                String inputBonusNumber = inputAdapter.inputBonusNumber();
                 int bonusNumber = parseBonusNumber(inputBonusNumber);
                 validateBonusNumber(winningMainLotto, bonusNumber);
                 return bonusNumber;
