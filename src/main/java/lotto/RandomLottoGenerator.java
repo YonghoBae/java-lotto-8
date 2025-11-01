@@ -2,6 +2,7 @@ package lotto;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.List;
+import lotto.domain.Lotto;
 
 public class RandomLottoGenerator implements LottoNumberGenerator {
     private static final int LOTTO_NUMBER_MIN = 1;

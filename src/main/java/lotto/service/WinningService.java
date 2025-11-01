@@ -4,13 +4,13 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import lotto.Lotto;
-import lotto.WinningCriteria;
-import lotto.WinningNumbers;
+import lotto.domain.Lotto;
+import lotto.domain.WinningCriteria;
+import lotto.domain.WinningNumbers;
 
 public class WinningService {
-    public WinningNumbers createWinningNumbers(Lotto mainLotto, int bonusNumber) {
-        return new WinningNumbers(mainLotto, bonusNumber);
+    public WinningNumbers createWinningNumbers(Lotto mainNumbers, int bonusNumber) {
+        return new WinningNumbers(mainNumbers, bonusNumber);
     }
 
     public Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningNumbers winningNumbers) {
@@ -58,11 +58,11 @@ public class WinningService {
         }
     }
 
-    public void validateBonusNumber(Lotto winningMainLotto, int bonusNumber) {
+    public void validateBonusNumber(Lotto winningMainNumbers, int bonusNumber) {
         if (bonusNumber < 1 || bonusNumber > 45) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
         }
-        if (winningMainLotto.contains(bonusNumber)) {
+        if (winningMainNumbers.contains(bonusNumber)) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
     }

@@ -1,15 +1,15 @@
-package lotto;
+package lotto.domain;
 
 import java.util.List;
 
 public class WinningNumbers {
 
-    private final Lotto mainLotto;
+    private final Lotto mainNumbers;
     private final int bonusNumber;
 
-    public WinningNumbers(Lotto mainLotto, int bonusNumber) {
-        validateBonusNumber(mainLotto, bonusNumber);
-        this.mainLotto = mainLotto;
+    public WinningNumbers(Lotto mainNumbers, int bonusNumber) {
+        validateBonusNumber(mainNumbers, bonusNumber);
+        this.mainNumbers = mainNumbers;
         this.bonusNumber = bonusNumber;
     }
 
@@ -23,7 +23,7 @@ public class WinningNumbers {
     }
 
     public List<Integer> getMainNumbers() {
-        return mainLotto.getNumbers();
+        return mainNumbers.getNumbers();
     }
 
     public int getBonusNumber() {

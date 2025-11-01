@@ -3,6 +3,8 @@ package lotto;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
+import lotto.domain.Lotto;
+import lotto.domain.WinningCriteria;
 
 public class OutputView {
     public void printError(String error) {
