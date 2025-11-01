@@ -3,11 +3,19 @@ package lotto.model.service;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import lotto.model.domain.Lotto;
 import lotto.model.domain.WinningCriteria;
 import lotto.model.domain.WinningNumbers;
+import lotto.model.support.ProfitCalculator;
 
 public class WinningService {
+    private final ProfitCalculator profitCalculator;
+
+    public WinningService(ProfitCalculator profitCalculator) {
+        this.profitCalculator = Objects.requireNonNull(profitCalculator, "profitCalculator must not be null");
+    }
+
     public WinningNumbers createWinningNumbers(Lotto winningMainLotto, int bonusNumber) {
         return new WinningNumbers(winningMainLotto.getNumbers(), bonusNumber);
     }
@@ -26,15 +34,6 @@ public class WinningService {
     }
 
     public double calculateProfitRate(Map<WinningCriteria, Integer> stats, int purchaseMoney) {
-        long totalPrize = 0;
-        for (Map.Entry<WinningCriteria, Integer> entry : stats.entrySet()) {
-            totalPrize += entry.getKey().getPrizeMoney() * entry.getValue();
-        }
-
-        if (purchaseMoney == 0) {
-            return 0.0;
-        }
-
-        return ((double) totalPrize / purchaseMoney) * 100.0;
+        return profitCalculator.calculate(stats, purchaseMoney);
     }
 }
