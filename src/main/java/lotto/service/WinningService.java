@@ -9,8 +9,8 @@ import lotto.domain.WinningCriteria;
 import lotto.domain.WinningNumbers;
 
 public class WinningService {
-    public WinningNumbers createWinningNumbers(Lotto mainNumbers, int bonusNumber) {
-        return new WinningNumbers(mainNumbers, bonusNumber);
+    public WinningNumbers createWinningNumbers(Lotto winningMainLotto, int bonusNumber) {
+        return new WinningNumbers(winningMainLotto.getNumbers(), bonusNumber);
     }
 
     public Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningNumbers winningNumbers) {
@@ -58,11 +58,11 @@ public class WinningService {
         }
     }
 
-    public void validateBonusNumber(Lotto winningMainNumbers, int bonusNumber) {
+    public void validateBonusNumber(Lotto winningMainLotto, int bonusNumber) {
         if (bonusNumber < 1 || bonusNumber > 45) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
         }
-        if (winningMainNumbers.contains(bonusNumber)) {
+        if (winningMainLotto.contains(bonusNumber)) {
             throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
         }
     }
