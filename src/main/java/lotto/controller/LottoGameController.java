@@ -53,26 +53,12 @@ public class LottoGameController {
         while (true) {
             try {
                 String inputMoney = inputAdapter.inputPurchaseAmount();
-                int money = parseMoney(inputMoney);
-                validateMoneyUnit(money);
+                int money = lottoService.parseMoney(inputMoney);
+                lottoService.validateMoneyUnit(money);
                 return money;
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
-        }
-    }
-
-    private int parseMoney(String inputMoney) throws IllegalArgumentException {
-        try {
-            return Integer.parseInt(inputMoney);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 구입 금액은 숫자여야 합니다.");
-        }
-    }
-
-    private void validateMoneyUnit(int money) throws IllegalArgumentException {
-        if (money <= 0 || money % 1000 != 0) {
-            throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위의 양수여야 합니다.");
         }
     }
 
