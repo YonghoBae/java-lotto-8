@@ -1,8 +1,9 @@
-package lotto;
+package lotto.model.support.impl;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import java.util.List;
-import lotto.domain.Lotto;
+import lotto.model.domain.Lotto;
+import lotto.model.support.LottoNumberGenerator;
 
 public class RandomLottoGenerator implements LottoNumberGenerator {
     private static final int LOTTO_NUMBER_MIN = 1;

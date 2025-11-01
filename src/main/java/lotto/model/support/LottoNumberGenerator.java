@@ -1,6 +1,6 @@
-package lotto;
+package lotto.model.support;
 
-import lotto.domain.Lotto;
+import lotto.model.domain.Lotto;
 
 public interface LottoNumberGenerator {
     public Lotto create();

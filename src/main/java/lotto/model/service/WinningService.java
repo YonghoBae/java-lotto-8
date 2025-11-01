@@ -1,12 +1,12 @@
-package lotto.service;
+package lotto.model.service;
 
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import lotto.domain.Lotto;
-import lotto.domain.WinningCriteria;
-import lotto.domain.WinningNumbers;
+import lotto.model.domain.Lotto;
+import lotto.model.domain.WinningCriteria;
+import lotto.model.domain.WinningNumbers;
 
 public class WinningService {
     public WinningNumbers createWinningNumbers(Lotto winningMainLotto, int bonusNumber) {

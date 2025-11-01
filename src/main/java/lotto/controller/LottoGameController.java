@@ -2,13 +2,13 @@ package lotto.controller;
 
 import java.util.List;
 import java.util.Map;
-import lotto.InputView;
-import lotto.domain.Lotto;
-import lotto.OutputView;
-import lotto.domain.WinningCriteria;
-import lotto.domain.WinningNumbers;
-import lotto.service.LottoService;
-import lotto.service.WinningService;
+import lotto.model.domain.Lotto;
+import lotto.model.domain.WinningCriteria;
+import lotto.model.domain.WinningNumbers;
+import lotto.model.service.LottoService;
+import lotto.model.service.WinningService;
+import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class LottoGameController {
 

@@ -1,8 +1,12 @@
 package lotto;
 
 import lotto.controller.LottoGameController;
-import lotto.service.LottoService;
-import lotto.service.WinningService;
+import lotto.model.service.LottoService;
+import lotto.model.service.WinningService;
+import lotto.model.support.LottoNumberGenerator;
+import lotto.model.support.impl.RandomLottoGenerator;
+import lotto.view.InputView;
+import lotto.view.OutputView;
 
 public class Application {
     public static void main(String[] args) {

@@ -1,9 +1,9 @@
-package lotto.service;
+package lotto.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import lotto.domain.Lotto;
-import lotto.LottoNumberGenerator;
+import lotto.model.domain.Lotto;
+import lotto.model.support.LottoNumberGenerator;
 
 public class LottoService {
     private static final int LOTTO_PRICE = 1000;
