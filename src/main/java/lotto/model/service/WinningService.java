@@ -1,6 +1,5 @@
 package lotto.model.service;
 
-import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -37,33 +36,5 @@ public class WinningService {
         }
 
         return ((double) totalPrize / purchaseMoney) * 100.0;
-    }
-
-    public List<Integer> parseWinningNumbers(String inputWinningNumbers) {
-        try {
-            return Arrays.stream(inputWinningNumbers.split(","))
-                    .map(String::trim)
-                    .map(Integer::parseInt)
-                    .toList();
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 당첨 번호는 숫자만 입력해야 합니다.");
-        }
-    }
-
-    public int parseBonusNumber(String inputBonusNumber) {
-        try {
-            return Integer.parseInt(inputBonusNumber);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 숫자만 입력해야 합니다.");
-        }
-    }
-
-    public void validateBonusNumber(Lotto winningMainLotto, int bonusNumber) {
-        if (bonusNumber < 1 || bonusNumber > 45) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
-        }
-        if (winningMainLotto.contains(bonusNumber)) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
-        }
     }
 }

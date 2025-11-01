@@ -50,9 +50,7 @@ public class LottoGameController {
         while (true) {
             try {
                 String inputMoney = inputView.inputPurchaseAmount();
-                int money = lottoService.parseMoney(inputMoney);
-                lottoService.validateMoneyUnit(money);
-                return money;
+                return lottoService.toValidMoney(inputMoney);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -63,8 +61,7 @@ public class LottoGameController {
         while (true) {
             try {
                 String inputWinningNumbers = inputView.inputWinningNumbers();
-                List<Integer> numbers = winningService.parseWinningNumbers(inputWinningNumbers);
-                return new Lotto(numbers);
+                return lottoService.toValidLotto(inputWinningNumbers);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
@@ -75,9 +72,7 @@ public class LottoGameController {
         while (true) {
             try {
                 String inputBonusNumber = inputView.inputBonusNumber();
-                int bonusNumber = winningService.parseBonusNumber(inputBonusNumber);
-                winningService.validateBonusNumber(winningMainLotto, bonusNumber);
-                return bonusNumber;
+                return lottoService.toValidBonus(winningMainLotto, inputBonusNumber);
             } catch (IllegalArgumentException e) {
                 System.out.println(e.getMessage());
             }
