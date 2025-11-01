@@ -5,7 +5,9 @@ import lotto.model.service.LottoService;
 import lotto.model.service.WinningService;
 import lotto.model.support.InputParser;
 import lotto.model.support.LottoNumberGenerator;
+import lotto.model.support.LottoValidator;
 import lotto.model.support.impl.DefaultInputParser;
+import lotto.model.support.impl.DefaultLottoValidator;
 import lotto.model.support.impl.RandomLottoGenerator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
@@ -17,7 +19,8 @@ public class Application {
         OutputView outputView = new OutputView();
         LottoNumberGenerator lottoNumberGenerator = new RandomLottoGenerator();
         InputParser inputParser = new DefaultInputParser();
-        LottoService lottoService = new LottoService(lottoNumberGenerator, inputParser);
+        LottoValidator lottoValidator = new DefaultLottoValidator();
+        LottoService lottoService = new LottoService(lottoNumberGenerator, inputParser, lottoValidator);
         WinningService winningService = new WinningService();
 
         LottoGameController lottoGameController = new LottoGameController(inputView, outputView, lottoService, winningService);
