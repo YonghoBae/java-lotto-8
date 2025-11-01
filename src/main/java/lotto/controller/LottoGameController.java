@@ -1,12 +1,9 @@
 package lotto.controller;
 
-import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import lotto.InputAdapter;
+import lotto.InputView;
 import lotto.Lotto;
-import lotto.LottoStore;
 import lotto.OutputView;
 import lotto.WinningCriteria;
 import lotto.WinningNumbers;
@@ -15,14 +12,14 @@ import lotto.service.WinningService;
 
 public class LottoGameController {
 
-    private final InputAdapter inputAdapter;
+    private final InputView inputView;
     private final OutputView outputView;
     private final LottoService lottoService;
     private final WinningService winningService;
 
-    public LottoGameController(InputAdapter inputAdapter, OutputView outputView, LottoService lottoService,
+    public LottoGameController(InputView inputView, OutputView outputView, LottoService lottoService,
                                WinningService winningService) {
-        this.inputAdapter = inputAdapter;
+        this.inputView = inputView;
         this.outputView = outputView;
         this.lottoService = lottoService;
         this.winningService = winningService;
@@ -52,7 +49,7 @@ public class LottoGameController {
     private int getValidPurchaseAmount() {
         while (true) {
             try {
-                String inputMoney = inputAdapter.inputPurchaseAmount();
+                String inputMoney = inputView.inputPurchaseAmount();
                 int money = lottoService.parseMoney(inputMoney);
                 lottoService.validateMoneyUnit(money);
                 return money;
@@ -65,7 +62,7 @@ public class LottoGameController {
     private Lotto getValidWinningMainLotto() {
         while (true) {
             try {
-                String inputWinningNumbers = inputAdapter.inputWinningNumbers();
+                String inputWinningNumbers = inputView.inputWinningNumbers();
                 List<Integer> numbers = winningService.parseWinningNumbers(inputWinningNumbers);
                 return new Lotto(numbers);
             } catch (IllegalArgumentException e) {
@@ -77,7 +74,7 @@ public class LottoGameController {
     private int getValidBonusNumber(Lotto winningMainLotto) {
         while (true) {
             try {
-                String inputBonusNumber = inputAdapter.inputBonusNumber();
+                String inputBonusNumber = inputView.inputBonusNumber();
                 int bonusNumber = winningService.parseBonusNumber(inputBonusNumber);
                 winningService.validateBonusNumber(winningMainLotto, bonusNumber);
                 return bonusNumber;

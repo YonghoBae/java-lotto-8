@@ -72,7 +72,7 @@ classDiagram
         +printError(String message)
     }
     class LottoGameController {
-        -InputAdapter inputAdapter
+        -InputAdapter inputView
         -OutputView outputView
         -GameFacade gameFacade
         +run()

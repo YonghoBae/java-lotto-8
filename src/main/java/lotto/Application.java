@@ -7,13 +7,13 @@ import lotto.service.WinningService;
 public class Application {
     public static void main(String[] args) {
         // TODO: 프로그램 구현
-        InputAdapter inputAdapter = new InputAdapter();
+        InputView inputView = new InputView();
         OutputView outputView = new OutputView();
         LottoStore lottoStore = new LottoStore();
         LottoService lottoService = new LottoService(lottoStore);
         WinningService winningService = new WinningService();
 
-        LottoGameController lottoGameController = new LottoGameController(inputAdapter, outputView, lottoService, winningService);
+        LottoGameController lottoGameController = new LottoGameController(inputView, outputView, lottoService, winningService);
 
         lottoGameController.run();
     }
