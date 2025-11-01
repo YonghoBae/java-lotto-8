@@ -17,7 +17,7 @@ public class WinningService {
     }
 
     public WinningNumbers createWinningNumbers(Lotto winningMainLotto, int bonusNumber) {
-        return new WinningNumbers(winningMainLotto.getNumbers(), bonusNumber);
+        return winningMainLotto.toWinningNumbers(bonusNumber);
     }
 
     public Map<WinningCriteria, Integer> calculateStatistics(List<Lotto> lottos, WinningNumbers winningNumbers) {

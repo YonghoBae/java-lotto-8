@@ -13,6 +13,12 @@ public enum WinningCriteria {
     private final long prizeMoney;
 
     WinningCriteria(int matchCount, boolean bonusRequired, long prizeMoney) {
+        if (matchCount < 0) {
+            throw new IllegalArgumentException("[ERROR] 일치 개수는 음수일 수 없습니다.");
+        }
+        if (prizeMoney < 0) {
+            throw new IllegalArgumentException("[ERROR] 상금은 음수일 수 없습니다.");
+        }
         this.matchCount = matchCount;
         this.bonusRequired = bonusRequired;
         this.prizeMoney = prizeMoney;
@@ -32,7 +38,7 @@ public enum WinningCriteria {
         return MISS;
     }
 
-    public long getPrizeMoney() {
+    public long prizeMoney() {
         return prizeMoney;
     }
 }

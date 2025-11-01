@@ -1,6 +1,5 @@
 package lotto.model.domain;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -10,7 +9,7 @@ public class Lotto {
 
     public Lotto(List<Integer> numbers) {
         validate(numbers);
-        this.numbers = numbers;
+        this.numbers = List.copyOf(numbers);
     }
 
     private void validate(List<Integer> numbers) {
@@ -37,15 +36,15 @@ public class Lotto {
     }
 
     public WinningCriteria calculateRank(WinningNumbers winningNumbers) {
-        int matchCount = countMatchingNumbers(winningNumbers.getMainNumbers());
-        boolean matchBonus = contains(winningNumbers.getBonusNumber());
+        int matchCount = countMatchingNumbers(winningNumbers);
+        boolean matchBonus = numbers.stream().anyMatch(winningNumbers::isBonusNumber);
 
         return WinningCriteria.valueOf(matchCount, matchBonus);
     }
 
-    private int countMatchingNumbers(List<Integer> numbersToCompare) {
+    private int countMatchingNumbers(WinningNumbers winningNumbers) {
         return (int) this.numbers.stream()
-                .filter(numbersToCompare::contains)
+                .filter(winningNumbers::containsMainNumber)
                 .count();
     }
 
@@ -53,7 +52,7 @@ public class Lotto {
         return this.numbers.contains(number);
     }
 
-    public List<Integer> getNumbers() {
-        return Collections.unmodifiableList(numbers);
+    public WinningNumbers toWinningNumbers(int bonusNumber) {
+        return new WinningNumbers(numbers, bonusNumber);
     }
 }

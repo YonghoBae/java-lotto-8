@@ -8,10 +8,9 @@ public class BasicProfitCalculator implements ProfitCalculator {
 
     @Override
     public double calculate(Map<WinningCriteria, Integer> stats, int purchaseMoney) {
-        long totalPrize = 0;
-        for (Map.Entry<WinningCriteria, Integer> entry : stats.entrySet()) {
-            totalPrize += entry.getKey().getPrizeMoney() * entry.getValue();
-        }
+        long totalPrize = stats.entrySet().stream()
+                .mapToLong(entry -> entry.getKey().prizeMoney() * entry.getValue())
+                .sum();
 
         if (purchaseMoney == 0) {
             return 0.0;

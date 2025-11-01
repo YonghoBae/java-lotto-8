@@ -23,15 +23,15 @@ public class OutputView {
         System.out.println("\n당첨 통계\n---");
 
         System.out.printf("3개 일치 (%,d원) - %d개\n",
-                WinningCriteria.FIFTH.getPrizeMoney(), stats.get(WinningCriteria.FIFTH));
+                WinningCriteria.FIFTH.prizeMoney(), stats.get(WinningCriteria.FIFTH));
         System.out.printf("4개 일치 (%,d원) - %d개\n",
-                WinningCriteria.FOURTH.getPrizeMoney(), stats.get(WinningCriteria.FOURTH));
+                WinningCriteria.FOURTH.prizeMoney(), stats.get(WinningCriteria.FOURTH));
         System.out.printf("5개 일치 (%,d원) - %d개\n",
-                WinningCriteria.THIRD.getPrizeMoney(), stats.get(WinningCriteria.THIRD));
+                WinningCriteria.THIRD.prizeMoney(), stats.get(WinningCriteria.THIRD));
         System.out.printf("5개 일치, 보너스 볼 일치 (%,d원) - %d개\n",
-                WinningCriteria.SECOND.getPrizeMoney(), stats.get(WinningCriteria.SECOND));
+                WinningCriteria.SECOND.prizeMoney(), stats.get(WinningCriteria.SECOND));
         System.out.printf("6개 일치 (%,d원) - %d개\n",
-                WinningCriteria.FIRST.getPrizeMoney(), stats.get(WinningCriteria.FIRST));
+                WinningCriteria.FIRST.prizeMoney(), stats.get(WinningCriteria.FIRST));
     }
 
     public void printProfitRate(double rate) {

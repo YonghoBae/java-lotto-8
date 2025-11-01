@@ -22,11 +22,11 @@ public class WinningNumbers {
         }
     }
 
-    public List<Integer> getMainNumbers() {
-        return mainNumbers;
+    public boolean containsMainNumber(int number) {
+        return mainNumbers.contains(number);
     }
 
-    public int getBonusNumber() {
-        return bonusNumber;
+    public boolean isBonusNumber(int number) {
+        return bonusNumber == number;
     }
 }
