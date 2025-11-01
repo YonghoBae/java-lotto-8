@@ -9,8 +9,8 @@ public class Application {
         // TODO: 프로그램 구현
         InputView inputView = new InputView();
         OutputView outputView = new OutputView();
-        LottoStore lottoStore = new LottoStore();
-        LottoService lottoService = new LottoService(lottoStore);
+        LottoNumberGenerator lottoNumberGenerator = new RandomLottoGenerator();
+        LottoService lottoService = new LottoService(lottoNumberGenerator);
         WinningService winningService = new WinningService();
 
         LottoGameController lottoGameController = new LottoGameController(inputView, outputView, lottoService, winningService);

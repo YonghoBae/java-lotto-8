@@ -1,15 +1,17 @@
 package lotto.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import lotto.Lotto;
-import lotto.LottoStore;
+import lotto.LottoNumberGenerator;
 
 public class LottoService {
+    private static final int LOTTO_PRICE = 1000;
 
-    private final LottoStore lottoStore;
+    private final LottoNumberGenerator lottoNumberGenerator;
 
-    public LottoService(LottoStore lottoStore) {
-        this.lottoStore = lottoStore;
+    public LottoService(LottoNumberGenerator lottoNumberGenerator) {
+        this.lottoNumberGenerator = lottoNumberGenerator;
     }
 
     public int parseMoney(String inputMoney) throws IllegalArgumentException {
@@ -27,6 +29,18 @@ public class LottoService {
     }
 
     public List<Lotto> createLotto(int money) {
-        return lottoStore.buyLottos(money);
+        if (money < LOTTO_PRICE) {
+            throw new IllegalArgumentException("[ERROR] 최소 구입 금액은 1,000원입니다.");
+        }
+        if (money % LOTTO_PRICE != 0) {
+            throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위여야 합니다.");
+        }
+
+        int count = money / LOTTO_PRICE;
+        List<Lotto> lottos = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            lottos.add(lottoNumberGenerator.create());
+        }
+        return lottos;
     }
 }
