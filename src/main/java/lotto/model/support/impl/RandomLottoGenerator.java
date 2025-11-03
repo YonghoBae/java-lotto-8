@@ -13,8 +13,8 @@ public class RandomLottoGenerator implements LottoNumberGenerator {
     public Lotto create() {
         List<Integer> numbers = Randoms.pickUniqueNumbersInRange(LOTTO_NUMBER_MIN, LOTTO_NUMBER_MAX, LOTTO_NUMBER_SIZE);
 
-        List<Integer> sortedNumbers = numbers.stream().
-                sorted()
+        List<Integer> sortedNumbers = numbers.stream()
+                .sorted()
                 .toList();
 
         return new Lotto(sortedNumbers);
