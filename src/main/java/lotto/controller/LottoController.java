@@ -29,23 +29,9 @@ public class LottoController {
     public void run() {
         try {
             int money = getValidPurchaseAmount();
-
-            List<Lotto> lottos = lottoService.createLotto(money);
-
-            outputView.printLottos(lottos);
-
-            Lotto winningMainLotto = getValidWinningMainLotto();
-
-            int bonusNumber = getValidBonusNumber(winningMainLotto);
-
-            WinningNumbers winningNumbers = winningService.createWinningNumbers(winningMainLotto, bonusNumber);
-
-            Map<WinningCriteria, Integer> statistics = winningService.calculateStatistics(lottos, winningNumbers);
-
-            double profitRate = winningService.calculateProfitRate(statistics, money);
-
-            outputView.printStatistics(statistics);
-            outputView.printProfitRate(profitRate);
+            List<Lotto> lottos = purchaseLottos(money);
+            WinningNumbers winningNumbers = collectWinningNumbers();
+            presentResult(lottos, winningNumbers, money);
         } catch (IllegalStateException e) {
             outputView.printError(e.getMessage());
         }
@@ -80,5 +66,24 @@ public class LottoController {
             outputView.printBonusNumberPrompt();
             return lottoService.toValidBonus(winningMainLotto, inputView.readLine());
         });
+    }
+
+    private List<Lotto> purchaseLottos(int money) {
+        List<Lotto> lottos = lottoService.createLotto(money);
+        outputView.printLottos(lottos);
+        return lottos;
+    }
+
+    private WinningNumbers collectWinningNumbers() {
+        Lotto winningMainLotto = getValidWinningMainLotto();
+        int bonusNumber = getValidBonusNumber(winningMainLotto);
+        return winningService.createWinningNumbers(winningMainLotto, bonusNumber);
+    }
+
+    private void presentResult(List<Lotto> lottos, WinningNumbers winningNumbers, int money) {
+        Map<WinningCriteria, Integer> statistics = winningService.calculateStatistics(lottos, winningNumbers);
+        double profitRate = winningService.calculateProfitRate(statistics, money);
+        outputView.printStatistics(statistics);
+        outputView.printProfitRate(profitRate);
     }
 }
