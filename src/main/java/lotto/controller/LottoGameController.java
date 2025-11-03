@@ -68,6 +68,4 @@ public class LottoGameController {
     private int getValidBonusNumber(Lotto winningMainLotto) {
         return loop(() -> lottoService.toValidBonus(winningMainLotto, inputView.readBonus()));
     }
-
-
 }
