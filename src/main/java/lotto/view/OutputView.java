@@ -9,6 +9,9 @@ import lotto.model.domain.WinningCriteria;
 
 public class OutputView {
     private static final String UNKNOWN_ERROR_MESSAGE = "[ERROR] 알 수 없는 오류가 발생했습니다.";
+    private static final String PURCHASE_PROMPT = "구입금액을 입력해 주세요.";
+    private static final String WINNING_NUMBERS_PROMPT = "당첨 번호를 입력해 주세요.";
+    private static final String BONUS_NUMBER_PROMPT = "보너스 번호를 입력해 주세요.";
     private static final String PURCHASE_COUNT_FORMAT = "%d개를 구매했습니다.";
     private static final String WINNING_NUMBERS_HEADER = "\n당첨 통계\n---";
     private static final String MATCH_THREE_FORMAT = "3개 일치 (%,d원) - %d개\n";
@@ -19,6 +22,18 @@ public class OutputView {
     private static final String PROFIT_RATE_FORMAT = "총 수익률은 %s%%입니다.\n";
     private static final String RATE_PATTERN = "#,##0.0";
     private static final String ERROR_PREFIX_WITH_SPACE = LottoConstants.ERROR_PREFIX + " ";
+
+    public void printPurchaseAmountPrompt() {
+        System.out.println(PURCHASE_PROMPT);
+    }
+
+    public void printWinningNumbersPrompt() {
+        System.out.println(WINNING_NUMBERS_PROMPT);
+    }
+
+    public void printBonusNumberPrompt() {
+        System.out.println(BONUS_NUMBER_PROMPT);
+    }
 
     public void printError(String error) {
         if (error == null || error.isBlank()) {

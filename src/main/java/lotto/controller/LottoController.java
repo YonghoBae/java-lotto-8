@@ -62,14 +62,23 @@ public class LottoController {
     }
 
     private int getValidPurchaseAmount() {
-        return loop(() -> lottoService.toValidMoney(inputView.readMoney()));
+        return loop(() -> {
+            outputView.printPurchaseAmountPrompt();
+            return lottoService.toValidMoney(inputView.readLine());
+        });
     }
 
     private Lotto getValidWinningMainLotto() {
-        return loop(() -> lottoService.toValidLotto(inputView.readWinningNumbers()));
+        return loop(() -> {
+            outputView.printWinningNumbersPrompt();
+            return lottoService.toValidLotto(inputView.readLine());
+        });
     }
 
     private int getValidBonusNumber(Lotto winningMainLotto) {
-        return loop(() -> lottoService.toValidBonus(winningMainLotto, inputView.readBonus()));
+        return loop(() -> {
+            outputView.printBonusNumberPrompt();
+            return lottoService.toValidBonus(winningMainLotto, inputView.readLine());
+        });
     }
 }
