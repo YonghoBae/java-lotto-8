@@ -1,6 +1,6 @@
 package lotto;
 
-import lotto.controller.LottoGameController;
+import lotto.controller.LottoController;
 import lotto.model.service.LottoService;
 import lotto.model.service.WinningService;
 import lotto.model.support.InputParser;
@@ -26,8 +26,8 @@ public class Application {
         LottoService lottoService = new LottoService(lottoNumberGenerator, inputParser, lottoValidator);
         WinningService winningService = new WinningService(profitCalculator);
 
-        LottoGameController lottoGameController = new LottoGameController(inputView, outputView, lottoService, winningService);
+        LottoController lottoController = new LottoController(inputView, outputView, lottoService, winningService);
 
-        lottoGameController.run();
+        lottoController.run();
     }
 }
