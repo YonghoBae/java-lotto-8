@@ -27,24 +27,28 @@ public class LottoController {
     }
 
     public void run() {
-        int money = getValidPurchaseAmount();
+        try {
+            int money = getValidPurchaseAmount();
 
-        List<Lotto> lottos = lottoService.createLotto(money);
+            List<Lotto> lottos = lottoService.createLotto(money);
 
-        outputView.printLottos(lottos);
+            outputView.printLottos(lottos);
 
-        Lotto winningMainLotto = getValidWinningMainLotto();
+            Lotto winningMainLotto = getValidWinningMainLotto();
 
-        int bonusNumber = getValidBonusNumber(winningMainLotto);
+            int bonusNumber = getValidBonusNumber(winningMainLotto);
 
-        WinningNumbers winningNumbers = winningService.createWinningNumbers(winningMainLotto, bonusNumber);
+            WinningNumbers winningNumbers = winningService.createWinningNumbers(winningMainLotto, bonusNumber);
 
-        Map<WinningCriteria, Integer> statistics = winningService.calculateStatistics(lottos, winningNumbers);
+            Map<WinningCriteria, Integer> statistics = winningService.calculateStatistics(lottos, winningNumbers);
 
-        double profitRate = winningService.calculateProfitRate(statistics, money);
+            double profitRate = winningService.calculateProfitRate(statistics, money);
 
-        outputView.printStatistics(statistics);
-        outputView.printProfitRate(profitRate);
+            outputView.printStatistics(statistics);
+            outputView.printProfitRate(profitRate);
+        } catch (IllegalStateException e) {
+            outputView.printError(e.getMessage());
+        }
     }
 
     private <T> T loop(Supplier<T> step) {

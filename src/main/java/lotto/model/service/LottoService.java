@@ -2,7 +2,7 @@ package lotto.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import lotto.exception.ErrorCode;
 import lotto.model.domain.Lotto;
 import lotto.model.support.InputParser;
 import lotto.model.support.LottoValidator;
@@ -16,21 +16,34 @@ public class LottoService {
     private final LottoValidator lottoValidator;
 
     public LottoService(LottoNumberGenerator lottoNumberGenerator, InputParser inputParser, LottoValidator lottoValidator) {
+        if (lottoNumberGenerator == null) {
+            throw ErrorCode.MISSING_NUMBER_GENERATOR.toIllegalStateException();
+        }
+        if (inputParser == null) {
+            throw ErrorCode.MISSING_INPUT_PARSER.toIllegalStateException();
+        }
+        if (lottoValidator == null) {
+            throw ErrorCode.MISSING_VALIDATOR.toIllegalStateException();
+        }
         this.lottoNumberGenerator = lottoNumberGenerator;
-        this.inputParser = Objects.requireNonNull(inputParser, "inputParser must not be null");
-        this.lottoValidator = Objects.requireNonNull(lottoValidator, "lottoValidator must not be null");
+        this.inputParser = inputParser;
+        this.lottoValidator = lottoValidator;
     }
 
     public List<Lotto> createLotto(int money) {
         lottoValidator.validateMoney(money);
         if (money < LOTTO_PRICE) {
-            throw new IllegalArgumentException("[ERROR] 최소 구입 금액은 1,000원입니다.");
+            throw ErrorCode.INVALID_PURCHASE_MINIMUM.toIllegalArgumentException();
         }
 
         int count = money / LOTTO_PRICE;
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
-            lottos.add(lottoNumberGenerator.create());
+            Lotto lotto = lottoNumberGenerator.create();
+            if (lotto == null) {
+                throw ErrorCode.LOTTO_CREATION_FAILURE.toIllegalStateException();
+            }
+            lottos.add(lotto);
         }
         return lottos;
     }
@@ -48,6 +61,9 @@ public class LottoService {
     }
 
     public int toValidBonus(Lotto winningMainLotto, String bonusInput) {
+        if (winningMainLotto == null) {
+            throw ErrorCode.MISSING_WINNING_MAIN_LOTTO.toIllegalStateException();
+        }
         int bonus = inputParser.parseIntStrict(bonusInput);
         lottoValidator.validateBonus(winningMainLotto, bonus);
         return bonus;

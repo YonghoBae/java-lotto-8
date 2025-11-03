@@ -1,5 +1,7 @@
 package lotto.model.domain;
 
+import lotto.exception.ErrorCode;
+
 public enum WinningCriteria {
     FIRST(6, false, 2_000_000_000L),
     SECOND(5, true, 30_000_000L),
@@ -14,10 +16,10 @@ public enum WinningCriteria {
 
     WinningCriteria(int matchCount, boolean bonusRequired, long prizeMoney) {
         if (matchCount < 0) {
-            throw new IllegalArgumentException("[ERROR] 일치 개수는 음수일 수 없습니다.");
+            throw ErrorCode.NEGATIVE_MATCH_COUNT.toIllegalStateException();
         }
         if (prizeMoney < 0) {
-            throw new IllegalArgumentException("[ERROR] 상금은 음수일 수 없습니다.");
+            throw ErrorCode.NEGATIVE_PRIZE.toIllegalStateException();
         }
         this.matchCount = matchCount;
         this.bonusRequired = bonusRequired;

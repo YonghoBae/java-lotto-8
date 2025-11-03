@@ -3,6 +3,7 @@ package lotto.model.support.impl;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lotto.exception.ErrorCode;
 import lotto.model.domain.Lotto;
 import lotto.model.support.LottoValidator;
 
@@ -11,30 +12,30 @@ public class DefaultLottoValidator implements LottoValidator {
     @Override
     public void validateMoney(int money) {
         if (money <= 0 || money % 1000 != 0) {
-            throw new IllegalArgumentException("[ERROR] 구입 금액은 1,000원 단위의 양수여야 합니다.");
+            throw ErrorCode.INVALID_PURCHASE_UNIT.toIllegalArgumentException();
         }
     }
 
     @Override
     public void validateNumbers(List<Integer> numbers) {
         if (numbers.size() != 6) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 6개여야 합니다.");
+            throw ErrorCode.INVALID_LOTTO_NUMBER_COUNT.toIllegalArgumentException();
         }
         if (hasInvalidRange(numbers)) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 1부터 45 사이의 숫자여야 합니다.");
+            throw ErrorCode.INVALID_LOTTO_NUMBER_RANGE.toIllegalArgumentException();
         }
         if (hasDuplicates(numbers)) {
-            throw new IllegalArgumentException("[ERROR] 로또 번호는 중복될 수 없습니다.");
+            throw ErrorCode.DUPLICATE_LOTTO_NUMBER.toIllegalArgumentException();
         }
     }
 
     @Override
     public void validateBonus(Lotto main, int bonus) {
         if (bonus < 1 || bonus > 45) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.");
+            throw ErrorCode.INVALID_BONUS_RANGE.toIllegalArgumentException();
         }
         if (main.contains(bonus)) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+            throw ErrorCode.DUPLICATE_BONUS_NUMBER.toIllegalArgumentException();
         }
     }
 

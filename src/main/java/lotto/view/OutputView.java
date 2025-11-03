@@ -8,7 +8,17 @@ import lotto.model.domain.WinningCriteria;
 
 public class OutputView {
     public void printError(String error) {
-        System.out.println(error);
+        if (error == null || error.isBlank()) {
+            System.out.println("[ERROR] 알 수 없는 오류가 발생했습니다.");
+            return;
+        }
+
+        if (error.startsWith("[ERROR]")) {
+            System.out.println(error);
+            return;
+        }
+
+        System.out.println("[ERROR] " + error);
     }
 
     public void printLottos(List<Lotto> lottos) {

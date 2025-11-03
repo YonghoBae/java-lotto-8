@@ -1,6 +1,7 @@
 package lotto.model.domain;
 
 import java.util.List;
+import lotto.exception.ErrorCode;
 
 public class WinningNumbers {
 
@@ -15,10 +16,10 @@ public class WinningNumbers {
 
     private void validateBonusNumber(List<Integer> mainNumbers, int bonus) {
         if (bonus < 1 || bonus > 45) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 1~45 사이여야 합니다.");
+            throw ErrorCode.INVALID_BONUS_RANGE_SHORT.toIllegalArgumentException();
         }
         if (mainNumbers.contains(bonus)) {
-            throw new IllegalArgumentException("[ERROR] 보너스 번호는 당첨 번호와 중복될 수 없습니다.");
+            throw ErrorCode.DUPLICATE_BONUS_NUMBER.toIllegalArgumentException();
         }
     }
 
