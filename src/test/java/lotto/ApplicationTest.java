@@ -54,6 +54,31 @@ class ApplicationTest extends NsTest {
         });
     }
 
+    @Test
+    void 잘못된_입력_재시도_후_정상_진행() {
+        assertRandomUniqueNumbersInRangeTest(
+                () -> {
+                    run("500", "8000", "1, 2, 3, 4, 5, 6", "0", "7");
+                    String output = output();
+                    assertThat(output).contains(
+                            ERROR_MESSAGE,
+                            "8개를 구매했습니다.",
+                            "당첨 번호를 입력해 주세요.",
+                            "[ERROR] 보너스 번호는 1부터 45 사이의 숫자여야 합니다.",
+                            "총 수익률은 62.5%입니다."
+                    );
+                },
+                List.of(8, 21, 23, 41, 42, 43),
+                List.of(3, 5, 11, 16, 32, 38),
+                List.of(7, 11, 16, 35, 36, 44),
+                List.of(1, 8, 11, 31, 41, 42),
+                List.of(13, 14, 16, 38, 42, 45),
+                List.of(7, 11, 30, 40, 42, 43),
+                List.of(2, 13, 22, 32, 38, 45),
+                List.of(1, 3, 5, 14, 22, 45)
+        );
+    }
+
     @Override
     public void runMain() {
         Application.main(new String[]{});
