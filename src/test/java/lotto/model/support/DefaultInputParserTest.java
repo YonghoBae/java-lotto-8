@@ -3,6 +3,8 @@ package lotto.model.support;
 import lotto.model.support.impl.DefaultInputParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.List;
 
@@ -19,10 +21,11 @@ class DefaultInputParserTest {
         assertThat(parser.parseIntStrict(" 2000 ")).isEqualTo(2000);
     }
 
-    @DisplayName("숫자가 아닌 값을 정수로 변환하려 할 때 예외가 발생한다.")
-    @Test
-    void parseIntStrict_rejectsNonNumeric() {
-        assertThatThrownBy(() -> parser.parseIntStrict("1o00"))
+    @DisplayName("숫자가 아닌 값을 정수로 변환하려 할 때 예외가 발생하고 메시지를 확인한다.")
+    @ParameterizedTest
+    @ValueSource(strings = {"1o00", "abc", "", " "})
+    void parseIntStrict_rejectsNonNumeric(String input) {
+        assertThatThrownBy(() -> parser.parseIntStrict(input))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
     }
@@ -35,9 +38,10 @@ class DefaultInputParserTest {
     }
 
     @DisplayName("쉼표로 구분된 값에 숫자가 아닌 항목이 있으면 예외가 발생한다.")
-    @Test
-    void parseCsvInts_rejectsNonNumeric() {
-        assertThatThrownBy(() -> parser.parseCsvInts("1, two, 3, 4, 5, 6"))
+    @ParameterizedTest
+    @ValueSource(strings = {"1, two, 3, 4, 5, 6", "", "1, , 3, 4, 5, 6"})
+    void parseCsvInts_rejectsInvalidInputs(String csv) {
+        assertThatThrownBy(() -> parser.parseCsvInts(csv))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
     }

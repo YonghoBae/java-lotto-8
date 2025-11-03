@@ -4,8 +4,13 @@ import lotto.model.domain.Lotto;
 import lotto.model.support.impl.DefaultLottoValidator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -21,18 +26,11 @@ class DefaultLottoValidatorTest {
                 .doesNotThrowAnyException();
     }
 
-    @DisplayName("구입 금액이 0이거나 음수이면 예외가 발생한다.")
-    @Test
-    void validateMoney_rejectsNonPositive() {
-        assertThatThrownBy(() -> validator.validateMoney(0))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
-    }
-
-    @DisplayName("구입 금액이 1,000원 단위가 아니면 예외가 발생한다.")
-    @Test
-    void validateMoney_requiresMultiplesOfThousand() {
-        assertThatThrownBy(() -> validator.validateMoney(1500))
+    @DisplayName("구입 금액이 0이거나 음수 또는 1,000원 단위가 아니면 예외가 발생한다.")
+    @ParameterizedTest
+    @ValueSource(ints = {0, -1000, 1500, 999})
+    void validateMoney_rejectsInvalidAmounts(int money) {
+        assertThatThrownBy(() -> validator.validateMoney(money))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
     }
@@ -44,18 +42,21 @@ class DefaultLottoValidatorTest {
                 .doesNotThrowAnyException();
     }
 
-    @DisplayName("로또 번호에 중복이 있으면 예외가 발생한다.")
-    @Test
-    void validateNumbers_rejectsDuplicates() {
-        assertThatThrownBy(() -> validator.validateNumbers(List.of(1, 2, 3, 4, 5, 5)))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessageContaining("[ERROR]");
-    }
+    @DisplayName("로또 번호 입력이 조건을 위반하면 예외가 발생한다.")
+    @ParameterizedTest
+    @CsvSource({
+            "1, 2, 3, 4, 5",
+            "1, 2, 3, 4, 5, 5",
+            "0, 2, 3, 4, 5, 6",
+            "1, 2, 3, 4, 5, 46"
+    })
+    void validateNumbers_rejectsInvalidInput(String csv) {
+        List<Integer> numbers = Arrays.stream(csv.split(","))
+                .map(String::trim)
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
 
-    @DisplayName("로또 번호가 1~45 범위를 벗어나면 예외가 발생한다.")
-    @Test
-    void validateNumbers_rejectsOutOfRange() {
-        assertThatThrownBy(() -> validator.validateNumbers(List.of(0, 2, 3, 4, 5, 6)))
+        assertThatThrownBy(() -> validator.validateNumbers(numbers))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
     }
