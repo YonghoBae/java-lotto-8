@@ -2,6 +2,7 @@ package lotto.model.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import lotto.common.LottoConstants;
 import lotto.exception.ErrorCode;
 import lotto.model.domain.Lotto;
 import lotto.model.support.InputParser;
@@ -9,8 +10,6 @@ import lotto.model.support.LottoValidator;
 import lotto.model.support.LottoNumberGenerator;
 
 public class LottoService {
-    private static final int LOTTO_PRICE = 1000;
-
     private final LottoNumberGenerator lottoNumberGenerator;
     private final InputParser inputParser;
     private final LottoValidator lottoValidator;
@@ -32,11 +31,11 @@ public class LottoService {
 
     public List<Lotto> createLotto(int money) {
         lottoValidator.validateMoney(money);
-        if (money < LOTTO_PRICE) {
+        if (money < LottoConstants.LOTTO_PRICE_UNIT) {
             throw ErrorCode.INVALID_PURCHASE_MINIMUM.toIllegalArgumentException();
         }
 
-        int count = money / LOTTO_PRICE;
+        int count = money / LottoConstants.LOTTO_PRICE_UNIT;
         List<Lotto> lottos = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Lotto lotto = lottoNumberGenerator.create();

@@ -7,6 +7,7 @@ import lotto.model.domain.WinningCriteria;
 import lotto.model.support.ProfitCalculator;
 
 public class BasicProfitCalculator implements ProfitCalculator {
+    private static final double PERCENT_CONVERSION = 100.0;
 
     @Override
     public double calculate(Map<WinningCriteria, Integer> stats, int purchaseMoney) {
@@ -26,6 +27,6 @@ public class BasicProfitCalculator implements ProfitCalculator {
                 .mapToLong(entry -> entry.getKey().prizeMoney() * entry.getValue())
                 .sum();
 
-        return ((double) totalPrize / purchaseMoney) * 100.0;
+        return ((double) totalPrize / purchaseMoney) * PERCENT_CONVERSION;
     }
 }

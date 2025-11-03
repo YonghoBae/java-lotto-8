@@ -3,6 +3,7 @@ package lotto.model.domain;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import lotto.common.LottoConstants;
 import lotto.exception.ErrorCode;
 
 public class Lotto {
@@ -14,11 +15,11 @@ public class Lotto {
     }
 
     private void validate(List<Integer> numbers) {
-        if (numbers.size() != 6) {
+        if (numbers.size() != LottoConstants.LOTTO_NUMBER_COUNT) {
             throw ErrorCode.INVALID_LOTTO_NUMBER_COUNT.toIllegalArgumentException();
         }
         Set<Integer> uniqueNumbers = new HashSet<>(numbers);
-        if (uniqueNumbers.size() != 6) {
+        if (uniqueNumbers.size() != LottoConstants.LOTTO_NUMBER_COUNT) {
             throw ErrorCode.DUPLICATE_LOTTO_NUMBER.toIllegalArgumentException();
         }
         // 3. 범위 검사
@@ -28,7 +29,8 @@ public class Lotto {
     }
 
     private boolean hasInvalidRange(List<Integer> numbers) {
-        return numbers.stream().anyMatch(n -> n < 1 || n > 45);
+        return numbers.stream()
+                .anyMatch(number -> number < LottoConstants.LOTTO_NUMBER_MIN || number > LottoConstants.LOTTO_NUMBER_MAX);
     }
 
     @Override

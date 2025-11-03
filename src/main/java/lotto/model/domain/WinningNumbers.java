@@ -1,6 +1,7 @@
 package lotto.model.domain;
 
 import java.util.List;
+import lotto.common.LottoConstants;
 import lotto.exception.ErrorCode;
 
 public class WinningNumbers {
@@ -15,7 +16,7 @@ public class WinningNumbers {
     }
 
     private void validateBonusNumber(List<Integer> mainNumbers, int bonus) {
-        if (bonus < 1 || bonus > 45) {
+        if (bonus < LottoConstants.BONUS_NUMBER_MIN || bonus > LottoConstants.BONUS_NUMBER_MAX) {
             throw ErrorCode.INVALID_BONUS_RANGE_SHORT.toIllegalArgumentException();
         }
         if (mainNumbers.contains(bonus)) {
