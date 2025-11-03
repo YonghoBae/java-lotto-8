@@ -54,7 +54,7 @@ public class LottoService {
     }
 
     public Lotto toValidLotto(String csvNumbers) {
-        List<Integer> numbers = inputParser.parseCsvInts(csvNumbers);
+        List<Integer> numbers = inputParser.parseNumbers(csvNumbers);
         lottoValidator.validateNumbers(numbers);
         return new Lotto(numbers);
     }

@@ -5,5 +5,5 @@ import java.util.List;
 public interface InputParser {
     int parseIntStrict(String s);
 
-    List<Integer> parseCsvInts(String csv);
+    List<Integer> parseNumbers(String input);
 }

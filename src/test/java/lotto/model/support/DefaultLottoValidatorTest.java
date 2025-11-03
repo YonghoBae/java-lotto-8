@@ -48,7 +48,8 @@ class DefaultLottoValidatorTest {
             "1, 2, 3, 4, 5",
             "1, 2, 3, 4, 5, 5",
             "0, 2, 3, 4, 5, 6",
-            "1, 2, 3, 4, 5, 46"
+            "1, 2, 3, 4, 5, 46",
+            "1, 2, 3, 4, 5, -1"
     })
     void validateNumbers_rejectsInvalidInput(String csv) {
         List<Integer> numbers = Arrays.stream(csv.split(","))

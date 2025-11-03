@@ -125,7 +125,7 @@ class WinningCriteria {
 class InputParser {
   <<interface>>
   +parseIntStrict(String) int
-  +parseCsvInts(String) List~Integer~
+  +parseNumbers(String) List~Integer~
 }
 class LottoValidator {
   <<interface>>
@@ -143,7 +143,7 @@ class ProfitCalculator {
 }
 class DefaultInputParser {
   +parseIntStrict(String) int
-  +parseCsvInts(String) List~Integer~
+  +parseNumbers(String) List~Integer~
 }
 class DefaultLottoValidator {
   +validateMoney(int) void

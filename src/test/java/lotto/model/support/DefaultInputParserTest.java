@@ -32,16 +32,16 @@ class DefaultInputParserTest {
 
     @DisplayName("쉼표로 구분된 숫자들을 정수 리스트로 변환한다.")
     @Test
-    void parseCsvInts_parsesNumbers() {
-        assertThat(parser.parseCsvInts("1, 2,3 , 4,5,6"))
+    void parseNumbers_parsesNumbers() {
+        assertThat(parser.parseNumbers("1, 2,3 , 4,5,6"))
                 .containsExactly(1, 2, 3, 4, 5, 6);
     }
 
     @DisplayName("쉼표로 구분된 값에 숫자가 아닌 항목이 있으면 예외가 발생한다.")
     @ParameterizedTest
     @ValueSource(strings = {"1, two, 3, 4, 5, 6", "", "1, , 3, 4, 5, 6"})
-    void parseCsvInts_rejectsInvalidInputs(String csv) {
-        assertThatThrownBy(() -> parser.parseCsvInts(csv))
+    void parseNumbers_rejectsInvalidInputs(String csv) {
+        assertThatThrownBy(() -> parser.parseNumbers(csv))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessageContaining("[ERROR]");
     }

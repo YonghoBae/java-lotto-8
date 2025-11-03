@@ -19,9 +19,9 @@ public class DefaultInputParser implements InputParser {
     }
 
     @Override
-    public List<Integer> parseCsvInts(String csv) {
+    public List<Integer> parseNumbers(String input) {
         try {
-            String sanitized = requireNonBlank(csv);
+            String sanitized = requireNonBlank(input);
             return Stream.of(sanitized.split(","))
                     .map(String::trim)
                     .map(Integer::parseInt)
